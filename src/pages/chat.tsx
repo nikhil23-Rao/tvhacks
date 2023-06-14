@@ -14,7 +14,7 @@ const Chat = () => {
         "Hi! Welcome to the bot! To begin on which car you would desire, let's start basic, how big would you like your car to be.",
       options: ["Minivan Size", "SUV Size", "Standard"],
       id: 1,
-      optionsStep: 1,
+      optionsStep: 2,
     },
   ]);
   const [options, setOptions] = useState([
