@@ -6,20 +6,29 @@ import { useEffect, useState } from "react";
 const Chat = () => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const [screen, setScreen] = useState<"car" | "learn" | "media">("car");
+  const [messages, setMessages] = useState([
+    {
+      sender: "them",
+      author: { name: "chatbot" },
+      body:
+        "Hi! Welcome to the bot! To begin on which car you would desire, let's start basic, how big would you like your car to be.",
+      options: ["Minivan Size", "SUV Size", "Standard"],
+      id: 1,
+      optionsStep: 1,
+    },
+  ]);
+  const [options, setOptions] = useState([
+    {
+      forMessageId: 1,
+      options: ["Minivan Size", "SUV Size", "Standard"],
+    },
+  ]);
 
   useEffect(() => {
     if (localStorage.getItem("theme")) {
       setTheme(localStorage.getItem("theme") as "light" | "dark");
     } else setTheme("light");
   }, []);
-
-  const steps = [
-    {
-      id: "0",
-      message: "Welcome to react chatbot!",
-      trigger: "1",
-    },
-  ];
 
   return (
     <>
@@ -124,77 +133,87 @@ const Chat = () => {
                   : "Show Media"}
               </h1>
             </div>
-            <div>
-              <section
-                className="discussion"
-                style={{ marginLeft: 40, overflowY: "scroll", height: 370 }}
-              >
-                <Message
-                  key={1}
-                  author={{ name: "chatbot" }}
-                  body={"testMessage"}
-                  sender={"them"}
+            {screen === "car" && (
+              <>
+                <div>
+                  <section
+                    className="discussion"
+                    style={{ marginLeft: 40, overflowY: "scroll", height: 370 }}
+                  >
+                    {messages.map((message) => {
+                      return (
+                        <>
+                          <Message
+                            key={1}
+                            author={{ name: "chatbot" }}
+                            body={message.body}
+                            sender={"them"}
+                            style={{
+                              maxWidth: 500,
+                              borderRadius: 10,
+                              paddingLeft: 20,
+                              paddingRight: 20,
+                              fontSize: 14,
+                            }}
+                            className={"middle"}
+                          />
+                          <div style={{ marginTop: 20 }}>
+                            {message.options.map((o) => (
+                              <div
+                                style={{
+                                  width: "50%",
+                                  height: 40,
+                                  backgroundColor: "lightgreen",
+                                  borderRadius: 15,
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  display: "flex",
+                                  marginBottom: 20,
+                                  cursor: "pointer",
+                                }}
+                                onClick={() => {
+                                  // setResponse
+                                }}
+                              >
+                                {o}
+                              </div>
+                            ))}
+                          </div>
+                        </>
+                      );
+                    })}
+                  </section>
+                </div>
+                <div
                   style={{
-                    maxWidth: 200,
-                    borderRadius: 100,
-                    paddingLeft: 20,
-                    paddingRight: 20,
-                    fontSize: 14,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    flexDirection: "column",
                   }}
-                  className={"middle"}
-                />
-              </section>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexDirection: "column",
-              }}
-            >
-              <div
-                style={{
-                  width: "50%",
-                  height: 40,
-                  backgroundColor: "lightgreen",
-                  borderRadius: 15,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  display: "flex",
-                  marginBottom: 20,
-                }}
-              >
-                Option 1
-              </div>
-              <div
-                style={{
-                  width: "50%",
-                  height: 40,
-                  backgroundColor: "lightgreen",
-                  borderRadius: 15,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  display: "flex",
-                  marginBottom: 20,
-                }}
-              >
-                Option 1
-              </div>{" "}
-              <div
-                style={{
-                  width: "50%",
-                  height: 40,
-                  backgroundColor: "lightgreen",
-                  borderRadius: 15,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  display: "flex",
-                }}
-              >
-                Option 1
-              </div>
-            </div>
+                >
+                  {/* {options.filter().map((o) => {
+			return (
+				<div
+				style={{
+				  width: "50%",
+				  height: 40,
+				  backgroundColor: "lightgreen",
+				  borderRadius: 15,
+				  alignItems: "center",
+				  justifyContent: "center",
+				  display: "flex",
+				  marginBottom: 20,
+				}}
+			      >
+				
+			      </div>
+			      
+			)
+		})} */}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
