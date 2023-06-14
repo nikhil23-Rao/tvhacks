@@ -6,7 +6,7 @@ import { colors } from "@/config/colors";
 import { Primary } from "@/components/Primary";
 import { useRouter } from "next/router";
 import { getLottieFileOptions } from "@/utils/getLottieFileOptions";
-import animationData from "../../public/92377-quiz-mode.json";
+import animationData from "../../public/97973-car-in-motion.json";
 import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -47,13 +47,13 @@ export default function Home() {
                   color: theme === "dark" ? "#fff" : "#000",
                 }}
               >
-                A Website Designed for
+                Get One Step Closer To
                 <br />{" "}
                 <Typed
                   strings={[
-                    "Summarizing Long Notes.",
-                    "Finding Educational Articles.",
-                    "Giving You Informative Videos.",
+                    "Saving The World.",
+                    "Staying Sustainable.",
+                    "Saving Energy.",
                   ]}
                   typeSpeed={55}
                   backSpeed={50}
@@ -71,28 +71,17 @@ export default function Home() {
                 }}
                 id="desc"
               >
-                Introducing our study website, designed to make learning easier
-                and more efficient. With our notes summarization tool, you can
-                quickly create condensed versions of your study materials. Our
-                resource finder makes it simple to locate educational videos and
-                articles. Whether you're studying for exams or just looking to
-                expand your knowledge, our website has everything you need to
-                succeed.
+                A large cause of energy and sustainability challenges come from
+                cars. What if there was a way to get recommended a car to buy,
+                instead of listening to a dealership that just wants you money.
+                Meet our new AI Chatbot.
               </p>
               <div style={{ display: "flex", flexDirection: "row" }}>
                 <Primary
                   onClick={() => {
-                    router.push("/summarize");
+                    router.push("/chat");
                   }}
-                  title="Notes Summarizer"
-                />
-                <Primary
-                  style={{ marginLeft: 20 }}
-                  onClick={() => {
-                    router.push("/resources");
-                  }}
-                  btnColor="#27C392"
-                  title="Resource Finder"
+                  title="Talk To AI Chatbot"
                 />
               </div>
               <p
@@ -111,29 +100,15 @@ export default function Home() {
                   target={"_blank"}
                   rel="noreferrer"
                 >
-                  Nikhil Rao,
+                  Nikhil Rao &
                 </a>{" "}
                 <a
                   href="https://www.instagram.com/vinayrao1061"
                   target={"_blank"}
                   rel="noreferrer"
                 >
-                  Vinay Rao,
+                  Vinay Rao
                 </a>{" "}
-                <a
-                  href="https://www.instagram.com/vinayrao1061"
-                  target={"_blank"}
-                  rel="noreferrer"
-                >
-                  Abhinav Shah,
-                </a>{" "}
-                <a
-                  href="https://www.instagram.com/vinayrao1061"
-                  target={"_blank"}
-                  rel="noreferrer"
-                >
-                  Ria Poluru
-                </a>
               </p>
             </div>
           </div>

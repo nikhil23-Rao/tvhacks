@@ -1,18 +1,38 @@
+import NextLink from "next/link";
+
+const NavLinks = [
+  {
+    href: "/",
+    name: "Home",
+  },
+  {
+    href: "/about",
+    name: "About",
+  },
+  {
+    href: "/projects",
+    name: "Projects",
+  },
+  {
+    href: "/timeline",
+    name: "Timeline",
+  },
+];
+
 export const Navigation = () => {
   return (
     <>
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <img
-          src={"/edutoolslogo.png"}
-          style={{
-            width: 220,
-            fontSize: 52,
-            marginLeft: "16%",
-            marginTop: -30,
-          }}
-          alt=""
-        />
-      </div>
+      <header>
+        <nav>
+          <ul>
+            {NavLinks.map((link, idx) => (
+              <li key={idx}>
+                <NextLink href={link.href}>{link.name}</NextLink>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </header>
     </>
   );
 };
