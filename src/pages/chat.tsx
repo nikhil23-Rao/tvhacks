@@ -2,33 +2,40 @@ import Message from "@/components/Message";
 import { Navigation } from "@/components/Navigation";
 import { colors } from "@/config/colors";
 import { useEffect, useState } from "react";
+import { callAPI } from "../callapi";
+import axios from "axios";
 
 const Chat = () => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
-  const [screen, setScreen] = useState<"car" | "learn" | "media">("car");
+  const [screen, setScreen] = useState<"car" | "learn" | "media">("learn");
+  const [typing, setTyping] = useState(false);
+  const [type, setType] = useState("pictures");
+  const [media, setMedia] = useState([]);
+  const [searchMedia, setSearchMedia] = useState("");
   const [messages, setMessages] = useState([
     {
-      sender: "them",
-      author: { name: "chatbot" },
+      from: "them",
       body:
-        "Hi! Welcome to the bot! To begin on which car you would desire, let's start basic, how big would you like your car to be.",
-      options: ["Minivan Size", "SUV Size", "Standard"],
-      id: 1,
-      optionsStep: 2,
+        "Welcome to Recycle IT! We are made to save the world from plastic pollution. Feel free to ask any questions recycling that you may have.",
     },
   ]);
-  const [options, setOptions] = useState([
-    {
-      forMessageId: 1,
-      options: ["Minivan Size", "SUV Size", "Standard"],
-    },
-  ]);
+  const [search, setSearch] = useState("");
+  const [text, setText] = useState("");
 
   useEffect(() => {
     if (localStorage.getItem("theme")) {
       setTheme(localStorage.getItem("theme") as "light" | "dark");
     } else setTheme("light");
   }, []);
+
+  useEffect(() => {
+    var objDiv = document.getElementById("scroll");
+    if (objDiv && screen === "learn") objDiv.scrollTop = objDiv?.scrollHeight;
+  }, [messages, screen]);
+
+  useEffect(() => {
+    console.log("MEDA", media);
+  }, [media]);
 
   return (
     <>
@@ -38,42 +45,14 @@ const Chat = () => {
           backgroundColor: theme === "dark" ? "#1A212D" : "",
         }}
       >
-        <header>
-          <nav style={{ backgroundColor: colors.primary }}>
-            <ul>
-              <li
-                style={{ fontWeight: screen === "car" ? "bold" : "" }}
-                onClick={() => {
-                  setScreen("car");
-                }}
-              >
-                <a style={{ cursor: "pointer" }}>Recomend Car</a>
-              </li>
-              <li
-                style={{ fontWeight: screen === "learn" ? "bold" : "" }}
-                onClick={() => {
-                  setScreen("learn");
-                }}
-              >
-                <a style={{ cursor: "pointer" }}>Learn</a>
-              </li>
-              <li
-                style={{ fontWeight: screen === "media" ? "bold" : "" }}
-                onClick={() => {
-                  setScreen("media");
-                }}
-              >
-                <a style={{ cursor: "pointer" }}>Show Media</a>
-              </li>
-            </ul>
-          </nav>
-        </header>
         <div
           style={{
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             flexDirection: "column",
+            top: -50,
+            position: "relative",
           }}
         >
           <div
@@ -108,7 +87,7 @@ const Chat = () => {
                 style={{
                   color: colors.primary,
                   marginLeft: 20,
-                  marginTop: -16,
+                  marginTop: -20,
                 }}
               >
                 Currently Active
@@ -123,97 +102,194 @@ const Chat = () => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                flexDirection: "column",
               }}
             >
-              <h1 style={{ color: "#fff" }}>
-                {screen === "car"
-                  ? "Recomend Car"
-                  : screen === "learn"
-                  ? "Learn More"
-                  : "Show Media"}
-              </h1>
+              <h1 style={{ color: "#fff" }}>Learn More</h1>
+              {screen === "car" && (
+                <div className="input-box" style={{ width: "40%" }}>
+                  <i className="fa fa-search"></i>
+                  <input
+                    type="text"
+                    placeholder="Search by type or name..."
+                    value={search}
+                    onChange={(e) => {
+                      setSearch(e.currentTarget.value);
+                    }}
+                  />
+                </div>
+              )}
             </div>
-            {screen === "car" && (
-              <>
-                <div>
+
+            <div
+              style={{ height: 300, overflowY: "scroll", marginTop: 20 }}
+              id="scroll"
+            >
+              {screen === "learn" && (
+                <>
                   <section
                     className="discussion"
-                    style={{ marginLeft: 40, overflowY: "scroll", height: 370 }}
+                    style={{ marginLeft: 60, marginTop: -60 }}
                   >
-                    {messages.map((message) => {
-                      return (
-                        <>
-                          <Message
-                            key={1}
-                            author={{ name: "chatbot" }}
-                            body={message.body}
-                            sender={"them"}
-                            style={{
-                              maxWidth: 500,
-                              borderRadius: 10,
-                              paddingLeft: 20,
-                              paddingRight: 20,
-                              fontSize: 14,
-                            }}
-                            className={"middle"}
-                          />
-                          <div style={{ marginTop: 20 }}>
-                            {message.options.map((o) => (
-                              <div
-                                style={{
-                                  width: "50%",
-                                  height: 40,
-                                  backgroundColor: "lightgreen",
-                                  borderRadius: 15,
-                                  alignItems: "center",
-                                  justifyContent: "center",
-                                  display: "flex",
-                                  marginBottom: 20,
-                                  cursor: "pointer",
-                                }}
-                                onClick={() => {
-                                  // setResponse
-                                }}
-                              >
-                                {o}
-                              </div>
-                            ))}
+                    {typing && (
+                      <>
+                        <img
+                          src="/robot.jpeg"
+                          alt=""
+                          style={{
+                            width: 50,
+                            height: 50,
+                            borderRadius: 200,
+                            border: "5px solid #4CB564",
+                            position: "absolute",
+                            bottom: 105,
+                            marginLeft: 14,
+                          }}
+                        />
+                        <div
+                          style={{
+                            position: "absolute",
+                            bottom: 73,
+                            zoom: 1.56,
+                            marginLeft: 50,
+                          }}
+                        >
+                          <div className="typing-indicator">
+                            <span></span>
+                            <span></span>
+                            <span></span>
                           </div>
-                        </>
-                      );
+                        </div>
+                      </>
+                    )}
+                    {messages.map((message) => {
+                      if (message.from === "them") {
+                        return (
+                          <div className="yours messages">
+                            <div className="message">{message.body}</div>
+                          </div>
+                        );
+                      } else
+                        return (
+                          <div className="mine messages">
+                            <div className="message last">{message.body}</div>
+                          </div>
+                        );
                     })}
                   </section>
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                  }}
-                >
-                  {/* {options.filter().map((o) => {
-			return (
-				<div
-				style={{
-				  width: "50%",
-				  height: 40,
-				  backgroundColor: "lightgreen",
-				  borderRadius: 15,
-				  alignItems: "center",
-				  justifyContent: "center",
-				  display: "flex",
-				  marginBottom: 20,
-				}}
-			      >
-				
-			      </div>
-			      
-			)
-		})} */}
-                </div>
-              </>
-            )}
+                </>
+              )}
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  position: "absolute",
+                  width: 750,
+                  bottom: 50,
+                }}
+              >
+                {screen === "learn" && (
+                  <div
+                    className="input-box"
+                    style={{
+                      width: "80%",
+                      height: 50,
+                    }}
+                  >
+                    <i className="fa fa-send"></i>
+                    <input
+                      type="text"
+                      placeholder="Ask a question..."
+                      value={text}
+                      onChange={(e) => {
+                        setText(e.currentTarget.value);
+                      }}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && text.length > 0) {
+                          const oldMessages = [...messages];
+                          setMessages([
+                            ...messages,
+                            { from: "me", body: text },
+                          ]);
+                          callAPI(
+                            text,
+                            setMessages,
+                            [...oldMessages, { from: "me", body: text }],
+                            setTyping
+                          );
+                          setText("");
+                        }
+                      }}
+                    />
+                  </div>
+                )}
+                {screen === "media" && (
+                  <div
+                    className="input-box"
+                    style={{ width: "80%", height: 50 }}
+                  >
+                    {type === "videos" ? (
+                      <i
+                        className="fa fa-play"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          setMedia([]);
+                          setType("pictures");
+                        }}
+                      ></i>
+                    ) : (
+                      <i
+                        className="fa fa-camera"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => {
+                          setMedia([]);
+                          setType("videos");
+                        }}
+                      ></i>
+                    )}
+                    <input
+                      type="text"
+                      placeholder="Search..."
+                      value={searchMedia}
+                      onChange={(e) => {
+                        setSearchMedia(e.currentTarget.value);
+                      }}
+                      onKeyDown={async (e) => {
+                        if (e.key === "Enter" && searchMedia.length > 0) {
+                          if (type === "pictures") {
+                            const { data } = await axios.get(
+                              `https://api.pexels.com/v1/search?query="${e.currentTarget.value}"&per_page=5`,
+                              {
+                                headers: {
+                                  Authorization:
+                                    "SdjW1ao3WKkJSzGaEITOoRHrrIcpKs4Ej60wAPDKtwrUXQq9tR6A7piu",
+                                },
+                              }
+                            );
+                            setMedia(data.photos);
+                            setSearchMedia("");
+                          } else {
+                            const { data } = await axios.get(
+                              `https://api.pexels.com/videos/search?query="${e.currentTarget.value}"&per_page=5`,
+                              {
+                                headers: {
+                                  Authorization:
+                                    "SdjW1ao3WKkJSzGaEITOoRHrrIcpKs4Ej60wAPDKtwrUXQq9tR6A7piu",
+                                },
+                              }
+                            );
+                            setMedia(data.videos);
+                            setSearchMedia("");
+                          }
+                        }
+                      }}
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </div>

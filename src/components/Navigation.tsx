@@ -23,7 +23,12 @@ export const Navigation = () => {
   return (
     <>
       <header>
-        <nav>
+        <nav
+          style={{
+            backgroundColor: "transparent",
+            borderColor: "2px solid #eee",
+          }}
+        >
           <ul>
             {NavLinks.map((link, idx) => (
               <li key={idx}>

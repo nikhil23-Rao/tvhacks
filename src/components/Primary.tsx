@@ -3,6 +3,7 @@ import { colors } from "@/config/colors";
 interface IProps {
   onClick: () => void;
   title: string;
+  icon?: any;
   boxShadow?: boolean;
   btnColor?: string;
   width?: string | number;
@@ -20,6 +21,7 @@ export const Primary = ({
   style,
   disabled = false,
   cursor = "pointer",
+  icon,
 }: IProps) => {
   return (
     <button
@@ -38,6 +40,7 @@ export const Primary = ({
       className="landingpagebutton"
       onClick={onClick}
     >
+      {icon}
       {title}
     </button>
   );

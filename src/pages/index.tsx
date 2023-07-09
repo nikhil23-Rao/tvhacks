@@ -6,7 +6,7 @@ import { colors } from "@/config/colors";
 import { Primary } from "@/components/Primary";
 import { useRouter } from "next/router";
 import { getLottieFileOptions } from "@/utils/getLottieFileOptions";
-import animationData from "../../public/97973-car-in-motion.json";
+import animationData from "../../public/54940-recycle-icon-animation.json";
 import { useEffect, useState } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -28,7 +28,6 @@ export default function Home() {
           className="split left"
           style={{ backgroundColor: theme === "dark" ? "#1A212D" : "" }}
         >
-          <Navigation />
           <div className="centered" style={{ marginTop: 0 }}>
             <div
               className="centered"
@@ -47,13 +46,13 @@ export default function Home() {
                   color: theme === "dark" ? "#fff" : "#000",
                 }}
               >
-                Get One Step Closer To
+                A New Way To
                 <br />{" "}
                 <Typed
                   strings={[
-                    "Saving The World.",
-                    "Staying Sustainable.",
-                    "Saving Energy.",
+                    "Recycle Items.",
+                    "Identify Items.",
+                    "Save The Planet.",
                   ]}
                   typeSpeed={55}
                   backSpeed={50}
@@ -71,17 +70,25 @@ export default function Home() {
                 }}
                 id="desc"
               >
-                A large cause of energy and sustainability challenges come from
-                cars. What if there was a way to get recommended a car to buy,
-                instead of listening to a dealership that just wants you money.
-                Meet our new AI Chatbot.
+                Built for the Tri-Valley Hacks hackathon, this application will
+                help users decide what to recycle, when to do it, and learn more
+                about what materials belong in the trash.
               </p>
-              <div style={{ display: "flex", flexDirection: "row" }}>
+              <div
+                style={{ display: "flex", flexDirection: "row", marginTop: 20 }}
+              >
+                <Primary
+                  onClick={() => {
+                    router.push("/identify");
+                  }}
+                  title="Go To Image Recognition"
+                />
                 <Primary
                   onClick={() => {
                     router.push("/chat");
                   }}
-                  title="Talk To AI Chatbot"
+                  style={{ marginLeft: 20 }}
+                  title="Ask Chatbot Questions"
                 />
               </div>
               <p
@@ -100,14 +107,7 @@ export default function Home() {
                   target={"_blank"}
                   rel="noreferrer"
                 >
-                  Nikhil Rao &
-                </a>{" "}
-                <a
-                  href="https://www.instagram.com/vinayrao1061"
-                  target={"_blank"}
-                  rel="noreferrer"
-                >
-                  Vinay Rao
+                  Nikhil, Vinay, Anirudh, Dishant, Anay
                 </a>{" "}
               </p>
             </div>
@@ -221,8 +221,8 @@ export default function Home() {
           >
             <Lottie
               options={getLottieFileOptions(animationData)}
-              height={770}
-              width={770}
+              height={700}
+              width={700}
               isClickToPauseDisabled={true}
             />
           </div>
