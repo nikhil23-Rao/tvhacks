@@ -15,6 +15,7 @@ import {
   Button,
   useDisclosure,
 } from "@chakra-ui/react";
+import { callAPI } from "@/callapi";
 
 const Chat = () => {
   const [theme, setTheme] = useState<"light" | "dark">("light");
@@ -96,6 +97,7 @@ const Chat = () => {
                   const imageSrc = getScreenshot();
                   console.log(imageSrc);
                   setImage(imageSrc);
+                  callAPI(imageSrc);
                   onOpen();
                 }}
                 style={{
